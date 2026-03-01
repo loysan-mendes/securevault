@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}SecureVault — Encrypted File Storage{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-shield-halved"></i> Military-Grade Encryption
+        </div>
+        <h1 class="hero-title">
+            Store Files with<br>
+            <span class="gradient-text">Zero Compromise</span>
+        </h1>
+        <p class="hero-subtitle">
+            Every file is encrypted with AES-256-GCM before touching disk.
+            Your password never leaves your session. No plaintext. No exceptions.
+        </p>
+        <div class="hero-actions">
+            {% if user %}
+            <a href="/vault" class="btn btn-primary btn-lg">
+                <i class="fas fa-folder-locked"></i> Open Vault
+            </a>
+            {% else %}
+            <a href="/register" class="btn btn-primary btn-lg">
+                <i class="fas fa-user-plus"></i> Create Free Vault
+            </a>
+            <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">Designed for Security</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-key"></i></div>
+                <h3>AES-256-GCM</h3>
+                <p>Authenticated encryption. Each file is encrypted with a unique key derived via PBKDF2 and a random IV
+                    — never reused.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-fingerprint"></i></div>
+                <h3>PBKDF2 Key Derivation</h3>
+                <p>600,000 iterations of PBKDF2-HMAC-SHA256 stretch your password into a cryptographic key, resisting
+                    offline brute-force attacks.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-check-double"></i></div>
+                <h3>Integrity Verification</h3>
+                <p>GCM authentication tags verify every download. If a single byte is tampered with, decryption is
+                    aborted before any plaintext is exposed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
+                <h3>Zero Plaintext Storage</h3>
+                <p>Plaintext is encrypted in-memory and immediately discarded. Only ciphertext bytes ever touch the disk
+                    or database.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-ban"></i></div>
+                <h3>Brute-Force Protection</h3>
+                <p>Rate-limited login endpoints and automatic account lockout after 5 failed attempts prevent password
+                    guessing attacks.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-list-check"></i></div>
+                <h3>Audit Trail</h3>
+                <p>Every login, upload, download, and delete is logged with timestamp and IP address for forensic
+                    review.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tech-strip">
+    <div class="container">
+        <div class="tech-items">
+            <div class="tech-item"><i class="fas fa-lock"></i> AES-256-GCM</div>
+            <div class="tech-sep">·</div>
+            <div class="tech-item"><i class="fas fa-key"></i> PBKDF2-HMAC-SHA256</div>
+            <div class="tech-sep">·</div>
+            <div class="tech-item"><i class="fas fa-shield"></i> bcrypt auth</div>
+            <div class="tech-sep">·</div>
+            <div class="tech-item"><i class="fas fa-cookie-bite"></i> CSRF protection</div>
+            <div class="tech-sep">·</div>
+            <div class="tech-item"><i class="fas fa-gauge-high"></i> Rate limiting</div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

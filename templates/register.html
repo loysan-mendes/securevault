@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Register — SecureVault{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon"><i class="fas fa-user-plus"></i></div>
+            <h1>Create Your Vault</h1>
+            <p>Your password is never stored — only a bcrypt hash and a PBKDF2 encryption salt.</p>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-error"><i class="fas fa-circle-exclamation"></i> {{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/register" class="auth-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="username" name="username" class="form-input" placeholder="3–64 characters"
+                    required minlength="3" maxlength="64" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required
+                    autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" class="form-input"
+                        placeholder="At least 10 characters" required minlength="10" autocomplete="new-password">
+                    <button type="button" class="toggle-pw" onclick="togglePw('password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="pw-strength" id="pw-strength"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password"><i class="fas fa-lock-open"></i> Confirm Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                        placeholder="Repeat password" required autocomplete="new-password">
+                    <button type="button" class="toggle-pw" onclick="togglePw('confirm_password')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="security-note">
+                <i class="fas fa-circle-info"></i>
+                Your password is used to derive a unique encryption key (PBKDF2, 600k iterations) and is <strong>never
+                    stored</strong>.
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-vault"></i> Create Vault
+            </button>
+        </form>
+
+        <p class="auth-footer">Already have a vault? <a href="/login">Sign in</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Audit Log — SecureVault{% endblock %}
+{% block content %}
+<div class="container" style="padding: 2rem 1rem;">
+    <div class="page-header">
+        <h1><i class="fas fa-list-check"></i> Security Audit Log</h1>
+        <p>Last 100 events for your account. Review for suspicious activity.</p>
+    </div>
+
+    <div class="audit-table-wrap">
+        <table class="audit-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-clock"></i> Timestamp</th>
+                    <th><i class="fas fa-tag"></i> Event</th>
+                    <th><i class="fas fa-circle-info"></i> Details</th>
+                    <th><i class="fas fa-network-wired"></i> IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr
+                    class="audit-row audit-{{ 'danger' if 'failure' in log.event_type or 'fail' in log.event_type or 'integrity' in log.event_type else 'warning' if 'locked' in log.event_type or 'blocked' in log.event_type else 'normal' }}">
+                    <td class="audit-time">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td><span
+                            class="audit-badge audit-badge-{{ 'danger' if 'failure' in log.event_type or 'fail' in log.event_type else 'warning' if 'locked' in log.event_type else 'success' if 'success' in log.event_type else 'info' }}">{{
+                            log.event_type }}</span></td>
+                    <td>{{ log.details or '—' }}</td>
+                    <td><code>{{ log.ip_address or '—' }}</code></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="audit-empty">No audit events recorded yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="/vault" class="btn btn-ghost" style="margin-top:1.5rem"><i class="fas fa-arrow-left"></i> Back to Vault</a>
+</div>
+{% endblock %}

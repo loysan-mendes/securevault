@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} — SecureVault{% endblock %}
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" style="text-align:center">
+        <div class="auth-icon" style="font-size:3rem; color: var(--danger)">
+            <i class="fas fa-triangle-exclamation"></i>
+        </div>
+        <h1>{{ code }}</h1>
+        <p>{{ error }}</p>
+        <a href="/" class="btn btn-primary" style="margin-top:1.5rem"><i class="fas fa-house"></i> Go Home</a>
+    </div>
+</div>
+{% endblock %}
