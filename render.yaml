@@ -8,8 +8,8 @@ services:
     # Build: install Python dependencies
     buildCommand: pip install -r requirements.txt
 
-    # Start: run uvicorn directly (no run.py needed on Render)
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    # Start: run gunicorn for production
+    startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:$PORT
 
     # Point code at the right working directory
     rootDir: .
@@ -26,10 +26,10 @@ services:
         value: false
 
       - key: DATABASE_URL
-        value: sqlite:////data/securevault.db   # on persistent disk
+        value: sqlite:///./securevault.db
 
       - key: VAULT_DIR
-        value: /data/vault                      # on persistent disk
+        value: ./vault_data
 
       - key: MAX_FILE_SIZE_MB
         value: "50"
@@ -45,11 +45,3 @@ services:
 
       - key: UPLOAD_RATE_LIMIT
         value: "10/minute"
-
-    # Persistent disk — keeps SQLite DB and encrypted vault files across deploys
-    # NOTE: Persistent disk requires at minimum the 'starter' plan ($7/month)
-    # On the FREE plan, remove the 'disk' section below — but data will reset on redeploy!
-    disk:
-      name: securevault-data
-      mountPath: /data
-      sizeGB: 1
