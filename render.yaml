@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: securevault
+    runtime: python
+    region: oregon          # or: frankfurt, singapore, ohio
+    plan: free              # upgrade to 'starter' for persistent disk
+
+    # Build: install Python dependencies
+    buildCommand: pip install -r requirements.txt
+
+    # Start: run uvicorn directly (no run.py needed on Render)
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    # Point code at the right working directory
+    rootDir: .
+
+    # Health check — Render pings this to know the service is up
+    healthCheckPath: /
+
+    # Environment variables set at deploy time
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true        # Render auto-generates a secure random value ✅
+
+      - key: DEBUG
+        value: false
+
+      - key: DATABASE_URL
+        value: sqlite:////data/securevault.db   # on persistent disk
+
+      - key: VAULT_DIR
+        value: /data/vault                      # on persistent disk
+
+      - key: MAX_FILE_SIZE_MB
+        value: "50"
+
+      - key: SESSION_MAX_AGE
+        value: "3600"
+
+      - key: LOGIN_RATE_LIMIT
+        value: "5/minute"
+
+      - key: REGISTER_RATE_LIMIT
+        value: "3/minute"
+
+      - key: UPLOAD_RATE_LIMIT
+        value: "10/minute"
+
+    # Persistent disk — keeps SQLite DB and encrypted vault files across deploys
+    # NOTE: Persistent disk requires at minimum the 'starter' plan ($7/month)
+    # On the FREE plan, remove the 'disk' section below — but data will reset on redeploy!
+    disk:
+      name: securevault-data
+      mountPath: /data
+      sizeGB: 1
