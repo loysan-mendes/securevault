@@ -4,9 +4,13 @@
 
 <section class="hero">
     <div class="hero-glow"></div>
+    <!-- Floating particles -->
+    <div class="hero-particles" id="hero-particles"></div>
+
     <div class="hero-content">
         <div class="hero-badge">
-            <i class="fas fa-shield-halved"></i> Military-Grade Encryption
+            <span class="dot"></span>
+            Military-Grade Encryption
         </div>
         <h1 class="hero-title">
             Store Files with<br>
@@ -18,58 +22,85 @@
         </p>
         <div class="hero-actions">
             {% if user %}
-            <a href="/vault" class="btn btn-primary btn-lg">
-                <i class="fas fa-folder-locked"></i> Open Vault
+            <a href="/vault" class="btn btn-primary btn-xl">
+                <i class="fas fa-folder-locked"></i> Open My Vault
             </a>
             {% else %}
-            <a href="/register" class="btn btn-primary btn-lg">
+            <a href="/register" class="btn btn-primary btn-xl">
                 <i class="fas fa-user-plus"></i> Create Free Vault
             </a>
-            <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+            <a href="/login" class="btn btn-outline btn-xl">
+                <i class="fas fa-right-to-bracket"></i> Sign In
+            </a>
             {% endif %}
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-num">AES-256</div>
+                <div class="hero-stat-label">Encryption</div>
+            </div>
+            <div class="hero-stat-div"></div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">600K</div>
+                <div class="hero-stat-label">PBKDF2 Iterations</div>
+            </div>
+            <div class="hero-stat-div"></div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">0</div>
+                <div class="hero-stat-label">Plaintext Stored</div>
+            </div>
+            <div class="hero-stat-div"></div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">GCM</div>
+                <div class="hero-stat-label">Auth Tags</div>
+            </div>
         </div>
     </div>
 </section>
 
 <section class="features">
     <div class="container">
-        <h2 class="section-title">Designed for Security</h2>
+        <div class="section-eyebrow">Security Architecture</div>
+        <h2 class="section-title">Designed for <span class="gradient-text">Security</span></h2>
+        <p class="section-sub">Every layer of SecureVault is engineered to protect your data from the moment it leaves
+            your device.</p>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-key"></i></div>
-                <h3>AES-256-GCM</h3>
-                <p>Authenticated encryption. Each file is encrypted with a unique key derived via PBKDF2 and a random IV
-                    — never reused.</p>
+                <h3>AES-256-GCM Encryption</h3>
+                <p>Authenticated encryption that guarantees both confidentiality and integrity. Each file gets a unique
+                    key derived via PBKDF2 with a random IV — never reused.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-fingerprint"></i></div>
                 <h3>PBKDF2 Key Derivation</h3>
-                <p>600,000 iterations of PBKDF2-HMAC-SHA256 stretch your password into a cryptographic key, resisting
-                    offline brute-force attacks.</p>
+                <p>600,000 iterations of PBKDF2-HMAC-SHA256 stretch your password into a cryptographic key, making
+                    offline brute-force attacks computationally infeasible.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-check-double"></i></div>
                 <h3>Integrity Verification</h3>
                 <p>GCM authentication tags verify every download. If a single byte is tampered with, decryption is
-                    aborted before any plaintext is exposed.</p>
+                    aborted before any plaintext is exposed to your system.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-eye-slash"></i></div>
                 <h3>Zero Plaintext Storage</h3>
                 <p>Plaintext is encrypted in-memory and immediately discarded. Only ciphertext bytes ever touch the disk
-                    or database.</p>
+                    or database — never the original content.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-ban"></i></div>
                 <h3>Brute-Force Protection</h3>
                 <p>Rate-limited login endpoints and automatic account lockout after 5 failed attempts prevent password
-                    guessing attacks.</p>
+                    guessing and credential stuffing attacks.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-list-check"></i></div>
-                <h3>Audit Trail</h3>
-                <p>Every login, upload, download, and delete is logged with timestamp and IP address for forensic
-                    review.</p>
+                <h3>Immutable Audit Trail</h3>
+                <p>Every login, upload, download, and delete is logged with timestamp and IP address for complete
+                    forensic accountability and compliance review.</p>
             </div>
         </div>
     </div>
@@ -87,6 +118,8 @@
             <div class="tech-item"><i class="fas fa-cookie-bite"></i> CSRF protection</div>
             <div class="tech-sep">·</div>
             <div class="tech-item"><i class="fas fa-gauge-high"></i> Rate limiting</div>
+            <div class="tech-sep">·</div>
+            <div class="tech-item"><i class="fas fa-database"></i> SQLite encrypted</div>
         </div>
     </div>
 </section>

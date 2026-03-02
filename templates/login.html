@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Login — SecureVault{% endblock %}
+{% block title %}Sign In — SecureVault{% endblock %}
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">
         <div class="auth-header">
             <div class="auth-icon"><i class="fas fa-shield-halved"></i></div>
             <h1>Unlock Your Vault</h1>
-            <p>Authenticate to access your encrypted files.</p>
+            <p>Authenticate securely to access your encrypted files.</p>
         </div>
 
         {% if success %}
@@ -39,15 +39,15 @@
 
             <div class="security-note">
                 <i class="fas fa-circle-info"></i>
-                After 5 failed attempts, your account will be locked for 5 minutes.
+                After 5 failed attempts, your account will be locked for 5 minutes to prevent brute-force attacks.
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">
-                <i class="fas fa-right-to-bracket"></i> Sign In
+            <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                <i class="fas fa-right-to-bracket"></i> Sign In to Vault
             </button>
         </form>
 
-        <p class="auth-footer">New here? <a href="/register">Create a vault</a></p>
+        <p class="auth-footer">New here? <a href="/register">Create a vault</a> — it's free &amp; encrypted.</p>
     </div>
 </div>
 {% endblock %}

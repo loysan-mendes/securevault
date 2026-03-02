@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SecureVault{% endblock %}</title>
     <meta name="description" content="SecureVault — AES-256 encrypted file storage with zero plaintext exposure">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="nav-brand">
-                <i class="fas fa-shield-halved"></i>
+                <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
                 <span>SecureVault</span>
             </a>
             <div class="nav-links">
                 {% if user %}
-                    <a href="/vault" class="nav-link"><i class="fas fa-folder-locked"></i> My Vault</a>
-                    <a href="/audit" class="nav-link"><i class="fas fa-list-check"></i> Audit Log</a>
-                    <form action="/logout" method="post" style="display:inline">
-                        <button type="submit" class="btn btn-ghost btn-sm">
-                            <i class="fas fa-right-from-bracket"></i> Logout
-                        </button>
-                    </form>
+                <a href="/vault" class="nav-link {% if request.path == '/vault' %}active{% endif %}">
+                    <i class="fas fa-folder-locked"></i> My Vault
+                </a>
+                <a href="/audit" class="nav-link {% if request.path == '/audit' %}active{% endif %}">
+                    <i class="fas fa-list-check"></i> Audit Log
+                </a>
+                <form action="/logout" method="post" style="display:inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-ghost btn-sm">
+                        <i class="fas fa-right-from-bracket"></i> Logout
+                    </button>
+                </form>
                 {% else %}
-                    <a href="/login" class="nav-link">Login</a>
-                    <a href="/register" class="btn btn-primary btn-sm">Get Started</a>
+                <a href="/login" class="nav-link">Login</a>
+                <a href="/register" class="btn btn-primary btn-sm">Get Started</a>
                 {% endif %}
             </div>
         </div>
@@ -40,10 +50,18 @@
 
     <footer class="footer">
         <div class="footer-inner">
-            <span><i class="fas fa-lock"></i> AES-256-GCM &bull; PBKDF2 (600k iterations) &bull; Zero plaintext storage</span>
+            <i class="fas fa-lock"></i>
+            AES-256-GCM
+            <span class="footer-dot">·</span>
+            PBKDF2 &bull; 600k iterations
+            <span class="footer-dot">·</span>
+            Zero plaintext storage
+            <span class="footer-dot">·</span>
+            <i class="fas fa-shield-halved"></i> End-to-End Encrypted
         </div>
     </footer>
 
     <script src="/static/js/main.js"></script>
 </body>
+
 </html>

@@ -5,11 +5,18 @@
 
     <!-- Vault Header -->
     <div class="vault-header">
-        <div>
-            <h1><i class="fas fa-vault"></i> {{ user.username }}'s Vault</h1>
-            <p class="vault-subtitle">{{ files|length }} encrypted file{% if files|length != 1 %}s{% endif %} stored</p>
+        <div class="vault-header-left">
+            <h1><i class="fas fa-vault" style="-webkit-text-fill-color:var(--cyan)"></i> {{ user.username }}'s Vault
+            </h1>
+            <p class="vault-subtitle">Your personal encrypted file storage</p>
+            <div class="vault-meta">
+                <span class="vault-chip"><i class="fas fa-files"></i> {{ files|length }} file{% if files|length != 1
+                    %}s{% endif %} stored</span>
+                <span class="vault-chip"><i class="fas fa-lock"></i> AES-256-GCM</span>
+                <span class="vault-chip"><i class="fas fa-shield-halved"></i> End-to-End Encrypted</span>
+            </div>
         </div>
-        <button class="btn btn-primary" onclick="toggleUpload()">
+        <button class="btn btn-primary" onclick="toggleUpload()" id="upload-toggle-btn">
             <i class="fas fa-upload"></i> Upload File
         </button>
     </div>
@@ -24,37 +31,45 @@
 
     <!-- Upload Panel -->
     <div class="upload-panel" id="upload-panel" style="display:none">
-        <div class="panel-title"><i class="fas fa-lock"></i> Encrypt & Upload</div>
+        <div class="panel-title"><i class="fas fa-lock"></i> Encrypt &amp; Upload New File</div>
         <form method="post" action="/vault/upload" enctype="multipart/form-data" id="upload-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div class="upload-grid">
                 <div class="form-group">
-                    <label><i class="fas fa-file"></i> File</label>
+                    <label><i class="fas fa-file"></i> Select File</label>
                     <div class="file-drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
                         <i class="fas fa-cloud-arrow-up"></i>
                         <p>Drop file here or click to browse</p>
+                        <small>Any file type supported</small>
                         <span id="file-name-label" class="file-name-label"></span>
                     </div>
                     <input type="file" id="file-input" name="file" required style="display:none"
                         onchange="handleFileSelect(this)">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-lock"></i> Your Password</label>
-                    <p class="field-help">Used to derive your AES-256 encryption key via PBKDF2.</p>
+                    <label><i class="fas fa-lock"></i> Encryption Password</label>
+                    <p class="field-help">Used to derive your AES-256 encryption key via PBKDF2-HMAC-SHA256 (600k
+                        iterations). Never transmitted.</p>
                     <div class="input-wrapper">
-                        <input type="password" name="password" class="form-input"
+                        <input type="password" id="upload-pw" name="password" class="form-input"
                             placeholder="Enter your password to encrypt" required autocomplete="current-password">
                         <button type="button" class="toggle-pw" onclick="togglePw('upload-pw')">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
+                    <div class="security-note" style="margin-top:0.75rem; margin-bottom:0;">
+                        <i class="fas fa-circle-info"></i>
+                        Your password is used only for key derivation and is never stored or transmitted.
+                    </div>
                 </div>
             </div>
             <div class="upload-actions">
                 <button type="submit" class="btn btn-primary" id="upload-btn">
-                    <i class="fas fa-shield-halved"></i> Encrypt & Store
+                    <i class="fas fa-shield-halved"></i> Encrypt &amp; Store
                 </button>
-                <button type="button" class="btn btn-ghost" onclick="toggleUpload()">Cancel</button>
+                <button type="button" class="btn btn-ghost" onclick="toggleUpload()">
+                    <i class="fas fa-xmark"></i> Cancel
+                </button>
             </div>
         </form>
     </div>
@@ -72,19 +87,19 @@
                 <h3 class="file-name" title="{{ file.original_filename }}">{{ file.original_filename }}</h3>
                 <div class="file-meta">
                     <span><i class="fas fa-weight-hanging"></i> {{ file.file_size_bytes | filesizeformat }}</span>
-                    <span><i class="fas fa-calendar"></i> {{ file.uploaded_at.strftime('%d %b %Y') }}</span>
+                    <span><i class="fas fa-calendar-days"></i> {{ file.uploaded_at.strftime('%d %b %Y') }}</span>
                 </div>
             </div>
             <div class="file-actions">
                 <button class="btn btn-sm btn-primary download-btn" data-file-id="{{ file.id }}"
-                    data-file-name="{{ file.original_filename }}">
-                    <i class="fas fa-download"></i> Download
+                    data-file-name="{{ file.original_filename }}" style="flex:1">
+                    <i class="fas fa-unlock-keyhole"></i> Decrypt &amp; Download
                 </button>
                 <!-- Delete form -->
                 <form method="post" action="/vault/delete/{{ file.id }}" class="inline-form"
-                    onsubmit="return confirm('Permanently delete {{ file.original_filename }}?')">
+                    onsubmit="return confirmDelete('{{ file.original_filename }}')">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                    <button type="submit" class="btn btn-sm btn-danger">
+                    <button type="submit" class="btn btn-sm btn-danger" title="Delete file">
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>
@@ -94,10 +109,12 @@
     </div>
     {% else %}
     <div class="empty-vault">
-        <i class="fas fa-vault"></i>
+        <div class="empty-vault-icon">
+            <i class="fas fa-vault"></i>
+        </div>
         <h2>Your vault is empty</h2>
-        <p>Upload your first file — it will be encrypted before touching disk.</p>
-        <button class="btn btn-primary" onclick="toggleUpload()">
+        <p>Upload your first file — it will be encrypted with AES-256-GCM before touching disk.</p>
+        <button class="btn btn-primary btn-lg" onclick="toggleUpload()">
             <i class="fas fa-upload"></i> Upload First File
         </button>
     </div>
@@ -109,26 +126,29 @@
 <div class="modal-overlay" id="download-modal" style="display:none">
     <div class="modal">
         <div class="modal-header">
-            <h3><i class="fas fa-key"></i> Decrypt & Download</h3>
+            <h3><i class="fas fa-key"></i> Decrypt &amp; Download</h3>
             <button class="modal-close" onclick="closeDownload()"><i class="fas fa-xmark"></i></button>
         </div>
-        <p class="modal-subtitle">Filename: <strong id="download-filename"></strong></p>
-        <p class="modal-note">Your password is used to re-derive the AES key locally. It is never sent or stored.</p>
+        <p class="modal-subtitle">File: <strong id="download-filename" style="color:var(--text-primary)"></strong></p>
+        <div class="modal-note">
+            <i class="fas fa-circle-info"></i>
+            Your password re-derives the AES key client-side. It is <strong>never sent or stored</strong>.
+        </div>
         <form method="post" id="download-form" action="">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div class="form-group">
-                <label><i class="fas fa-lock"></i> Password</label>
+                <label><i class="fas fa-lock"></i> Vault Password</label>
                 <div class="input-wrapper">
                     <input type="password" name="password" id="dl-password" class="form-input"
-                        placeholder="Your vault password" required autocomplete="current-password">
+                        placeholder="Enter your vault password" required autocomplete="current-password">
                     <button type="button" class="toggle-pw" onclick="togglePwId('dl-password')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </div>
-            <div style="display:flex; gap:0.75rem; margin-top:1rem">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-unlock"></i> Decrypt & Download
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary" style="flex:1">
+                    <i class="fas fa-unlock"></i> Decrypt &amp; Download
                 </button>
                 <button type="button" class="btn btn-ghost" onclick="closeDownload()">Cancel</button>
             </div>
