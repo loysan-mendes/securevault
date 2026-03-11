@@ -1,4 +1,4 @@
-# SecureVault 🔒
+<img width="1920" height="1020" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_48_39" src="https://github.com/user-attachments/assets/4eaf2222-0b35-4153-ba5a-adbb5e7b5dad" /># SecureVault 🔒
 
 Hey! This is **SecureVault**, a project I built to keep files truly private. I wanted a way to store my sensitive documents where they’re protected by more than just a login—they're actually scrambled so that even the server can't read them without my password.
 
@@ -49,3 +49,15 @@ I wanted to see if I could build a "zero-knowledge" style storage system where I
 
 ---
 *Built with care and a lot of testing.*
+<img width="1920" height="872" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_48_39" src="https://github.com/user-attachments/assets/dc30c4fc-cead-4384-939a-7dfed6a53206" />
+
+<img width="1920" height="866" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_48_53" src="https://github.com/user-attachments/assets/538a0e47-e4a4-4ac7-85a9-2bfb823ce97a" />
+
+<img width="1920" height="876" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_49_03" src="https://github.com/user-attachments/assets/e2b85df2-791e-4e26-9b2f-c9e32500fbb6" />
+
+<img width="1920" height="876" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_49_03" src="https://github.com/user-attachments/assets/8555a73b-d69c-4ae4-b854-847df2878a86" />
+
+
+
+
+
