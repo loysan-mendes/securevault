@@ -55,7 +55,7 @@ I wanted to see if I could build a "zero-knowledge" style storage system where I
 
 <img width="1920" height="876" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_49_03" src="https://github.com/user-attachments/assets/e2b85df2-791e-4e26-9b2f-c9e32500fbb6" />
 
-<img width="1920" height="876" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_49_03" src="https://github.com/user-attachments/assets/8555a73b-d69c-4ae4-b854-847df2878a86" />
+<img width="1920" height="879" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_49_20" src="https://github.com/user-attachments/assets/dc02279b-0c84-484a-b8e5-edcade914300" />
 
 
 
