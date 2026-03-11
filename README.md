@@ -1,4 +1,4 @@
-<img width="1920" height="1020" alt="SecureVault — Encrypted File Storage - Brave 11-03-2026 17_48_39" src="https://github.com/user-attachments/assets/4eaf2222-0b35-4153-ba5a-adbb5e7b5dad" /># SecureVault 🔒
+# SecureVault 🔒
 
 Hey! This is **SecureVault**, a project I built to keep files truly private. I wanted a way to store my sensitive documents where they’re protected by more than just a login—they're actually scrambled so that even the server can't read them without my password.
 
